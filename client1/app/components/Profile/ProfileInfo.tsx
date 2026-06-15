@@ -21,7 +21,11 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
   const [editProfile, { isSuccess: success, error: updateError }] =
     useEditProfileMutation();
   const [loadUser, setLoadUser] = useState(false);
-  const {} = useLoadUserQuery(undefined, { skip: loadUser ? false : true });
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const {} = useLoadUserQuery(undefined, { skip: loadUser ? false : true || !mounted });
 
   const imageHandler = async (e: any) => {
     const fileReader = new FileReader();

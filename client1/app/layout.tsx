@@ -51,11 +51,17 @@ export default function RootLayout({
 }
 
 const Custom: FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isLoading } = useLoadUserQuery({});
+  const [mounted, setMounted] = React.useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const { isLoading } = useLoadUserQuery({}, { skip: !mounted });
 
   useEffect(() => {
     socketId.on("connection", () => {});
   }, []);
 
-  return <div>{isLoading ? <Loader /> : <div>{children} </div>}</div>;
+  return <div>{isLoading || !mounted ? <Loader /> : <div>{children} </div>}</div>;
 };
