@@ -23,7 +23,11 @@ const CourseDetailsPage = ({ id }: Props) => {
   const { data: config } = useGetStripePublishablekeyQuery({});
   const [createPaymentIntent, { data: paymentIntentData }] =
     useCreatePaymentIntentMutation();
-  const { data: userData } = useLoadUserQuery(undefined, {});
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const { data: userData } = useLoadUserQuery(undefined, { skip: !mounted });
   const [stripePromise, setStripePromise] = useState<any>(null);
   const [clientSecret, setClientSecret] = useState("");
 
