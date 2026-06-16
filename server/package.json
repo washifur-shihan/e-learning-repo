@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsnd --respawn server.ts"
+    "dev": "tsnd --respawn server.ts",
+    "build": "tsc",
+    "start": "node build/server.js"
   },
   "author": "Washifur Rahman",
   "license": "ISC",
