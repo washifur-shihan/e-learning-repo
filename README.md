@@ -20,6 +20,8 @@ A full-stack, comprehensive E-Learning Management System built with **Next.js (A
 *   **Profile Management:** Update personal information, manage passwords, and upload custom avatars.
 
 ### 👨‍💼 For Administrators (Dashboard)
+*   **/admin Route access mail:** washifur.mail@gmmail.com
+pass:123456
 *   **Course Management Engine:** Create, update, and delete courses. Upload course thumbnails, set pricing, and build course curriculum with video links and textual content.
 *   **User & Role Management:** View all registered users, update user roles (e.g., promote a user to `admin`), and manage platform access.
 *   **Order & Revenue Tracking:** View all purchases and track revenue over time.
