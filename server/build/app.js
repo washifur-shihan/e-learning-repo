@@ -24,7 +24,7 @@ exports.app.use((0, cookie_parser_1.default)());
 exports.app.use((0, cors_1.default)({
     // origin: process.env.ORIGIN,
     // origin: process.env.ORIGIN,
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", "https://e-learning-repo-ruddy.vercel.app"],
     credentials: true,
     // methods: ["GET", "POST", "PUT", "DELETE"],
 }));
