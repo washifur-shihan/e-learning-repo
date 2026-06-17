@@ -9,6 +9,7 @@ import { SessionProvider } from "next-auth/react";
 import React, { FC, useEffect } from "react";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import Loader from "./components/Loader/Loader";
+import ChatWidget from "./components/Chat/ChatWidget";
 import socketIO from "socket.io-client";
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
@@ -63,5 +64,5 @@ const Custom: FC<{ children: React.ReactNode }> = ({ children }) => {
     socketId.on("connection", () => {});
   }, []);
 
-  return <div>{isLoading || !mounted ? <Loader /> : <div>{children} </div>}</div>;
+  return <div>{isLoading || !mounted ? <Loader /> : <div>{children} <ChatWidget /></div>}</div>;
 };
