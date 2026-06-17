@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useSendMessageMutation } from "../../../redux/features/chat/chatApi";

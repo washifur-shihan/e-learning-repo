@@ -43,13 +43,13 @@ const Profile: FC<Props> = ({ user }) => {
   useEffect(() => {
     if (data) {
       const filteredCourses = user.courses
-        .map((userCourse: any) =>
+        ?.map((userCourse: any) =>
           data.courses.find((course: any) => course._id === userCourse._id)
         )
-        .filter((course: any) => course !== undefined);
+        .filter((course: any) => course !== undefined) || [];
       setCourses(filteredCourses);
     }
-  }, [data]);
+  }, [data, user.courses]);
 
   return (
     <div className="w-[85%] flex mx-auto">
