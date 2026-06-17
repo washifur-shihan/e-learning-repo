@@ -17,6 +17,34 @@ const ChatWidget = () => {
   const [sendMessage, { isLoading }] = useSendMessageMutation();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Load chat history from local storage on mount
+  useEffect(() => {
+    if (user) {
+      const savedMessages = localStorage.getItem(`chat_history_${user._id}`);
+      if (savedMessages) {
+        setMessages(JSON.parse(savedMessages));
+      }
+      const savedOpenState = localStorage.getItem(`chat_isOpen_${user._id}`);
+      if (savedOpenState === "true") {
+        setIsOpen(true);
+      }
+    }
+  }, [user]);
+
+  // Save chat history to local storage whenever it changes
+  useEffect(() => {
+    if (user && messages.length > 0) {
+      localStorage.setItem(`chat_history_${user._id}`, JSON.stringify(messages));
+    }
+  }, [messages, user]);
+
+  const toggleChat = (state: boolean) => {
+    setIsOpen(state);
+    if (user) {
+      localStorage.setItem(`chat_isOpen_${user._id}`, String(state));
+    }
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -69,7 +97,7 @@ const ChatWidget = () => {
             <h3 className="font-semibold flex items-center gap-2">
               <AiOutlineMessage /> AI Assistant
             </h3>
-            <button onClick={() => setIsOpen(false)} className="hover:text-gray-200">
+            <button onClick={() => toggleChat(false)} className="hover:text-gray-200">
               <AiOutlineClose size={20} />
             </button>
           </div>
@@ -127,7 +155,7 @@ const ChatWidget = () => {
       {/* Floating Button */}
       {!isOpen && (
         <button
-          onClick={() => setIsOpen(true)}
+          onClick={() => toggleChat(true)}
           className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-transform transform hover:scale-105 flex items-center justify-center"
         >
           <AiOutlineMessage size={28} />
