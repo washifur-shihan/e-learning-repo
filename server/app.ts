@@ -15,6 +15,7 @@ import orderRouter from './routes/order.route';
 import notificationRouter from './routes/notification.route';
 import analyticsRouter from './routes/analytics.route';
 import layoutRouter from './routes/layout.route';
+import chatRouter from './routes/chat.route';
 
 
 
@@ -40,7 +41,7 @@ app.use(cors({
 
 // routes
 
-app.use("/api/v1", userRouter, orderRouter,courseRouter,notificationRouter,analyticsRouter, layoutRouter);
+app.use("/api/v1", userRouter, orderRouter,courseRouter,notificationRouter,analyticsRouter, layoutRouter, chatRouter);
 
 // app.use("/api/v1", courseRouter);
 
