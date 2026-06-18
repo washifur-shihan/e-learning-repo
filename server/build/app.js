@@ -16,6 +16,7 @@ const order_route_1 = __importDefault(require("./routes/order.route"));
 const notification_route_1 = __importDefault(require("./routes/notification.route"));
 const analytics_route_1 = __importDefault(require("./routes/analytics.route"));
 const layout_route_1 = __importDefault(require("./routes/layout.route"));
+const chat_route_1 = __importDefault(require("./routes/chat.route"));
 //body parser
 exports.app.use(express_1.default.json({ limit: '50mb' }));
 // cookie parser
@@ -29,7 +30,7 @@ exports.app.use((0, cors_1.default)({
     // methods: ["GET", "POST", "PUT", "DELETE"],
 }));
 // routes
-exports.app.use("/api/v1", user_route_1.default, order_route_1.default, course_route_1.default, notification_route_1.default, analytics_route_1.default, layout_route_1.default);
+exports.app.use("/api/v1", user_route_1.default, order_route_1.default, course_route_1.default, notification_route_1.default, analytics_route_1.default, layout_route_1.default, chat_route_1.default);
 // app.use("/api/v1", courseRouter);
 // testing api
 exports.app.get("/test", (req, res, next) => {
