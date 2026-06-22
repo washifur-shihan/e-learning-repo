@@ -40,7 +40,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   });
 
   useEffect(() => {
-    if(!isLoading){
+    if (mounted && !isLoading) {
       if (!userData) {
         if (data) {
           socialAuth({
@@ -51,16 +51,16 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
           refetch();
         }
       }
-      if(data === null){
-        if(isSuccess){
+      if (data === null) {
+        if (isSuccess) {
           toast.success("Login Successfully");
         }
       }
-      if(data === null && !isLoading && !userData){
-          setLogout(true);
+      if (data === null && !isLoading && !userData) {
+        setLogout(true);
       }
     }
-  }, [data, userData,isLoading]);
+  }, [data, userData, isLoading, mounted]);
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
