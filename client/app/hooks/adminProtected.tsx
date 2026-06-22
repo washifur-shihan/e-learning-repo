@@ -1,27 +1,30 @@
 import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import Loader from "../components/Loader/Loader";
 
 interface ProtectedProps {
   children: React.ReactNode;
 }
 
 export default function AdminProtected({ children }: ProtectedProps) {
-  const { user } = useSelector((state: any) => state.auth);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return null;
+  const { data, isLoading } = useLoadUserQuery(undefined, {
+    skip: !mounted,
+  });
+
+  if (!mounted || isLoading) {
+    return <Loader />;
   }
 
-  if (user) {
-    const isAdmin = user?.role === "admin";
-    return isAdmin ? <>{children}</> : redirect("/");
-  } else {
-    return redirect("/");
+  if (data?.user && data.user.role === "admin") {
+    return <>{children}</>;
   }
+
+  return redirect("/");
 }
