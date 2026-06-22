@@ -120,8 +120,8 @@ exports.loginUser = (0, catchAsyncErrors_1.CatchAsyncError)((req, res, next) => 
 exports.logoutUser = (0, catchAsyncErrors_1.CatchAsyncError)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        res.cookie("access_token", "", { maxAge: 1 });
-        res.cookie("refresh_token", "", { maxAge: 1 });
+        res.cookie("access_token", "", Object.assign(Object.assign({}, jwt_1.accessTokenOptions), { maxAge: 1 }));
+        res.cookie("refresh_token", "", Object.assign(Object.assign({}, jwt_1.refreshTokenOptions), { maxAge: 1 }));
         const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a._id) || "";
         redis_1.redis.del(userId);
         res.status(200).json({

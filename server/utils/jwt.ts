@@ -34,8 +34,15 @@ interface ITokenOptions {
         maxAge: refreshTokenExpire * 60 * 60 * 24 * 1000 * 1000 * 10000,
         httpOnly: true,
         sameSite: 'lax',
-
     };
+
+    // only set secure to true and sameSite to none in production to support cross-site cookies (Vercel frontend)
+    if (process.env.NODE_ENV === 'production') {
+        accessTokenOptions.secure = true;
+        refreshTokenOptions.secure = true;
+        accessTokenOptions.sameSite = 'none';
+        refreshTokenOptions.sameSite = 'none';
+    }
 
 
 export const sendToken = (user: IUser, statusCode: number, res:Response) => {
@@ -45,16 +52,6 @@ export const sendToken = (user: IUser, statusCode: number, res:Response) => {
 
     // upload session to redis database to maintain cache
     redis.set(user._id, JSON.stringify(user) as any);
-
-
-
-
-
-    // only set secure to true in production
-
-    if (process.env.NODE_ENV == 'production') {
-        accessTokenOptions.secure = true;
-    }
 
     res.cookie("access_token", accessToken, accessTokenOptions);
     res.cookie("refresh_token", refreshToken, refreshTokenOptions);
