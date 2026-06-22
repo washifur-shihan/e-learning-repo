@@ -1,0 +1,21 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "feature-one",
+    "main",
+    "origin",
+    "washifur"
+  ],
+  "parent": {
+    "feature-one": "main",
+    "main": null,
+    "origin": "main",
+    "washifur": "main"
+  },
+  "order": [
+    "main",
+    "feature-one",
+    "origin",
+    "washifur"
+  ]
+}

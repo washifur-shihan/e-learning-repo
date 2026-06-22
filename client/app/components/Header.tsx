@@ -10,7 +10,7 @@ import SignUp from "./Auth/SignUp";
 import Verification from "./Auth/Verification";
 import Image from "next/image";
 import avatar from "../../public/assests/avatar.png";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useLogOutQuery, useSocialAuthMutation } from "@/redux/features/auth/authApi";
 import { toast } from "react-hot-toast";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
@@ -38,6 +38,11 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const {} = useLogOutQuery(undefined, {
     skip: !logout ? true : false,
   });
+
+  const logOutHandler = async () => {
+    setLogout(true);
+    await signOut();
+  };
 
   useEffect(() => {
     if (mounted && !isLoading) {
@@ -116,22 +121,45 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
                 />
               </div>
               {userData ? (
-                <Link href={"/profile"}>
-                  <Image
-                    src={userData?.user.avatar ? userData.user.avatar.url : avatar}
-                    alt=""
-                    width={30}
-                    height={30}
-                    className="w-[30px] h-[30px] rounded-full cursor-pointer"
-                    style={{border: activeItem === 5 ? "2px solid #37a39a" : "none"}}
-                  />
-                </Link>
+                <div className="hidden 800px:flex items-center">
+                  <Link href={"/profile"}>
+                    <span
+                      className={`${
+                        activeItem === 5
+                          ? "dark:text-[#37a39a] text-[crimson]"
+                          : "dark:text-white text-black"
+                      } text-[18px] px-6 font-Poppins font-[400] cursor-pointer`}
+                    >
+                      Profile
+                    </span>
+                  </Link>
+                  <span
+                    onClick={logOutHandler}
+                    className="dark:text-white text-black text-[18px] px-6 font-Poppins font-[400] cursor-pointer hover:text-[crimson] dark:hover:text-[#37a39a]"
+                  >
+                    Log Out
+                  </span>
+                  <Link href={"/profile"}>
+                    <Image
+                      src={userData?.user.avatar ? userData.user.avatar.url : avatar}
+                      alt=""
+                      width={30}
+                      height={30}
+                      className="w-[30px] h-[30px] rounded-full cursor-pointer ml-2"
+                      style={{border: activeItem === 5 ? "2px solid #37a39a" : "none"}}
+                    />
+                  </Link>
+                </div>
               ) : (
-                <HiOutlineUserCircle
-                  size={25}
-                  className="hidden 800px:block cursor-pointer dark:text-white text-black"
-                  onClick={() => setOpen(true)}
-                />
+                <span
+                  onClick={() => {
+                    setRoute("Login");
+                    setOpen(true);
+                  }}
+                  className="hidden 800px:block dark:text-white text-black text-[18px] px-6 font-Poppins font-[400] cursor-pointer hover:text-[crimson] dark:hover:text-[#37a39a]"
+                >
+                  Login
+                </span>
               )}
             </div>
           </div>
@@ -146,23 +174,44 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
           >
             <div className="w-[70%] fixed z-[999999999] h-screen bg-white dark:bg-slate-900 dark:bg-opacity-90 top-0 right-0">
               <NavItems activeItem={activeItem} isMobile={true} />
-              {userData?.user ? (
-                <Link href={"/profile"}>
-                  <Image
-                    src={userData?.user.avatar ? userData.user.avatar.url : avatar}
-                    alt=""
-                    width={30}
-                    height={30}
-                    className="w-[30px] h-[30px] rounded-full ml-[20px] cursor-pointer"
-                    style={{border: activeItem === 5 ? "2px solid #37a39a" : "none"}}
-                  />
-                </Link>
+              {userData ? (
+                <div className="mt-4">
+                  <Link href={"/profile"}>
+                    <div className="flex items-center py-5 px-6 cursor-pointer">
+                      <Image
+                        src={userData?.user.avatar ? userData.user.avatar.url : avatar}
+                        alt=""
+                        width={30}
+                        height={30}
+                        className="w-[30px] h-[30px] rounded-full cursor-pointer"
+                        style={{border: activeItem === 5 ? "2px solid #37a39a" : "none"}}
+                      />
+                      <span className="ml-3 dark:text-white text-black text-[18px] font-Poppins font-[400]">
+                        Profile
+                      </span>
+                    </div>
+                  </Link>
+                  <div
+                    onClick={() => {
+                      logOutHandler();
+                      setOpenSidebar(false);
+                    }}
+                    className="py-5 px-6 cursor-pointer dark:text-white text-black text-[18px] font-Poppins font-[400] hover:text-[crimson] dark:hover:text-[#37a39a]"
+                  >
+                    Log Out
+                  </div>
+                </div>
               ) : (
-                <HiOutlineUserCircle
-                  size={25}
-                  className="hidden 800px:block cursor-pointer dark:text-white text-black"
-                  onClick={() => setOpen(true)}
-                />
+                <div
+                  onClick={() => {
+                    setRoute("Login");
+                    setOpen(true);
+                    setOpenSidebar(false);
+                  }}
+                  className="py-5 px-6 cursor-pointer dark:text-white text-black text-[18px] font-Poppins font-[400] hover:text-[crimson] dark:hover:text-[#37a39a]"
+                >
+                  Login / Sign Up
+                </div>
               )}
               <br />
               <br />

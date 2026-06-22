@@ -1,22 +1,30 @@
 import { redirect } from "next/navigation";
-import UserAuth from "./userAuth";
 import React, { useEffect, useState } from "react";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import Loader from "../components/Loader/Loader";
 
-interface ProtectedProps{
-    children: React.ReactNode;
+interface ProtectedProps {
+  children: React.ReactNode;
 }
 
-export default function Protected({children}: ProtectedProps){
-    const isAuthenticated = UserAuth();
-    const [mounted, setMounted] = useState(false);
+export default function Protected({ children }: ProtectedProps) {
+  const [mounted, setMounted] = useState(false);
 
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    if (!mounted) {
-        return null;
-    }
+  const { data, isLoading } = useLoadUserQuery(undefined, {
+    skip: !mounted,
+  });
 
-    return isAuthenticated ? <>{children}</> : redirect("/");
+  if (!mounted || isLoading) {
+    return <Loader />;
+  }
+
+  if (data?.user) {
+    return <>{children}</>;
+  }
+
+  return redirect("/");
 }
