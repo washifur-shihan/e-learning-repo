@@ -19,15 +19,18 @@ exports.refreshTokenOptions = {
     httpOnly: true,
     sameSite: 'lax',
 };
+// only set secure to true and sameSite to none in production to support cross-site cookies (Vercel frontend)
+if (process.env.NODE_ENV === 'production') {
+    exports.accessTokenOptions.secure = true;
+    exports.refreshTokenOptions.secure = true;
+    exports.accessTokenOptions.sameSite = 'none';
+    exports.refreshTokenOptions.sameSite = 'none';
+}
 const sendToken = (user, statusCode, res) => {
     const accessToken = user.SignAccessToken();
     const refreshToken = user.SignRefreshToken();
     // upload session to redis database to maintain cache
     redis_1.redis.set(user._id, JSON.stringify(user));
-    // only set secure to true in production
-    if (process.env.NODE_ENV == 'production') {
-        exports.accessTokenOptions.secure = true;
-    }
     res.cookie("access_token", accessToken, exports.accessTokenOptions);
     res.cookie("refresh_token", refreshToken, exports.refreshTokenOptions);
     res.status(statusCode).json({
